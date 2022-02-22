@@ -12,7 +12,6 @@
 
 #list tbody tr td {
   padding: 4px;
-  
 }
 
 #list tbody tr:nth-child(odd) td {
@@ -21,6 +20,17 @@
 }
 
 #list tbody tr:nth-child(even) td {
-
   border-right: rgb(171, 219, 252) 1px dotted;
+}
+
+th[data-sort-direction="asc"]::after {
+  content: "\25b2";
+}
+
+th[data-sort-direction="desc"]::after {
+  content: "\25bc";
+}
+
+th[data-sort-direction=""]::after {
+  content: "";
 }

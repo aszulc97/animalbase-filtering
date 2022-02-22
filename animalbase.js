@@ -3,6 +3,8 @@
 window.addEventListener("DOMContentLoaded", start);
 
 let allAnimals = [];
+let filtered = allAnimals;
+let clicked;
 
 // The prototype for all animals:
 const Animal = {
@@ -10,6 +12,10 @@ const Animal = {
   desc: "-unknown animal-",
   type: "",
   age: 0,
+};
+
+const settings = {
+  sortDir: undefined,
 };
 
 function start() {
@@ -21,11 +27,32 @@ function start() {
     displayFiltered("dog");
   });
   document.querySelector("button[data-filter='*']").addEventListener("click", function () {
-    displayFiltered("");
+    displayFiltered("ftcctrtc");
   });
-  // TODO: Add event-listeners to filter and sort buttons
+  let allHeaders = document.querySelectorAll("th[data-action='sort']");
+  allHeaders.forEach((th) => {
+    th.addEventListener("click", function () {
+      if (typeof clicked !== "undefined") {
+        clicked.dataset.sortDirection = "";
+      }
+      //clicked.sortDir = undefined;
+      // clicked = this;
+      if (settings.sortDir) {
+        sortering(this.dataset.sort, true);
+        settings.sortDir = false;
+        this.dataset.sortDirection = "desc";
+      } else {
+        sortering(this.dataset.sort);
+        settings.sortDir = true;
+        this.dataset.sortDirection = "asc";
+      }
+      clicked = this;
+    });
+  }); // TODO: Add event-listeners to filter and sort buttons
   loadJSON();
 }
+
+//⭐ or ☆
 
 async function loadJSON() {
   const response = await fetch("animals.json");
@@ -43,9 +70,46 @@ function filtering(animalType) {
 }
 
 function displayFiltered(animalType) {
-  let filtered = filtering(animalType);
+  filtered = filtering(animalType);
   displayList(filtered);
 }
+
+function sortByProperty(array, propertyName) {
+  return array.sort(function (a, b) {
+    if (a[propertyName] < b[propertyName]) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
+function sortering(sortBy, reversed) {
+  filtered = sortByProperty(filtered, sortBy);
+  console.log(sortBy);
+  if (reversed === true) {
+    filtered = filtered.reverse();
+  }
+  displayList(filtered);
+}
+
+function compareFunction(a, b) {
+  if (a.name < b.name) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+// function compareBigToSmall(a, b) {
+//   if (a.name < b.name) {
+//     return 1;
+//   } else {
+//     return -1;
+//   }
+// }
+
+//animals.sort(compareFunction);
 
 function prepareObjects(jsonData) {
   allAnimals = jsonData.map(preapareObject);
