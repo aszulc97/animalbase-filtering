@@ -35,8 +35,6 @@ function start() {
       if (typeof clicked !== "undefined") {
         clicked.dataset.sortDirection = "";
       }
-      //clicked.sortDir = undefined;
-      // clicked = this;
       if (settings.sortDir) {
         sortering(this.dataset.sort, true);
         settings.sortDir = false;
@@ -48,7 +46,7 @@ function start() {
       }
       clicked = this;
     });
-  }); // TODO: Add event-listeners to filter and sort buttons
+  });
   loadJSON();
 }
 
@@ -100,16 +98,6 @@ function compareFunction(a, b) {
     return 1;
   }
 }
-
-// function compareBigToSmall(a, b) {
-//   if (a.name < b.name) {
-//     return 1;
-//   } else {
-//     return -1;
-//   }
-// }
-
-//animals.sort(compareFunction);
 
 function prepareObjects(jsonData) {
   allAnimals = jsonData.map(preapareObject);
